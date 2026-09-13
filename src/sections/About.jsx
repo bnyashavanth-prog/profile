@@ -95,12 +95,12 @@ export function About() {
                  style={{ WebkitMaskImage: 'radial-gradient(ellipse at center, black 40%, transparent 75%)', maskImage: 'radial-gradient(ellipse at center, black 40%, transparent 75%)' }}>
               
               <img 
-                src="/portrait.jpg" 
+                src="/edited_portrait.jpg" 
                 alt="Yashavanth BN" 
                 className="w-full h-full object-cover pointer-events-auto"
                 style={{ 
-                  objectPosition: '80% 30%',
-                  filter: 'brightness(0.9) contrast(1.1) sepia(0.2) hue-rotate(-5deg)'
+                  objectPosition: '50% 10%',
+                  filter: 'contrast(1.05)'
                 }}
               />
               

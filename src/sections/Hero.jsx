@@ -146,10 +146,10 @@ export function Hero() {
               </div>
 
               <img 
-                src="/portrait.jpg" 
+                src="/edited_portrait.jpg" 
                 alt="Yashavanth BN Portrait" 
-                className="w-full h-full object-cover object-right"
-                style={{ objectPosition: '75% center' }}
+                className="w-full h-full object-cover"
+                style={{ objectPosition: '50% 10%' }}
               />
               <div className="absolute inset-0 ring-1 ring-inset ring-white/10 rounded-2xl pointer-events-none z-20"></div>
             </div>
