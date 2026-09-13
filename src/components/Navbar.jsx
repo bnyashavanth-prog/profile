@@ -17,6 +17,16 @@ export function Navbar() {
     return () => clearInterval(timer);
   }, []);
 
+  const toggleTheme = () => {
+    const nextState = !isDark;
+    setIsDark(nextState);
+    if (nextState) {
+      document.documentElement.classList.remove('light');
+    } else {
+      document.documentElement.classList.add('light');
+    }
+  };
+
   const navItems = [
     { name: 'About', href: '#about' },
     { name: 'YVB&Co', href: '#yvbco' },
@@ -71,7 +81,7 @@ export function Navbar() {
               ))}
             </motion.nav>
             
-            <motion.div variants={navContainer} className="flex items-center space-x-6">
+            <motion.div variants={navContainer} className="flex items-center space-x-4 sm:space-x-6">
               <div className="flex items-center text-accent-orange">
                 <motion.span 
                   className="mr-2 text-xs text-accent-orange"
@@ -83,6 +93,24 @@ export function Navbar() {
               <div className="hidden sm:block text-accent-orange font-mono font-medium tracking-wider">
                 {time.toLocaleTimeString('en-US', { hour12: true })}
               </div>
+              <button 
+                onClick={toggleTheme}
+                aria-label="Toggle theme"
+                className="text-text-gray hover:text-white transition-colors p-1.5 rounded-full hover:bg-white/10 overflow-hidden relative w-8 h-8 flex items-center justify-center ml-2"
+              >
+                <AnimatePresence mode="wait" initial={false}>
+                  <motion.div
+                    key={isDark ? "moon" : "sun"}
+                    initial={{ rotate: -180, opacity: 0 }}
+                    animate={{ rotate: 0, opacity: 1 }}
+                    exit={{ rotate: 180, opacity: 0 }}
+                    transition={{ duration: 0.3 }}
+                    className="absolute"
+                  >
+                    {isDark ? <Moon size={18} /> : <Sun size={18} />}
+                  </motion.div>
+                </AnimatePresence>
+              </button>
             </motion.div>
           </div>
         ) : (
@@ -105,7 +133,8 @@ export function Navbar() {
             </nav>
             
             <button 
-              onClick={() => setIsDark(!isDark)}
+              onClick={toggleTheme}
+              aria-label="Toggle theme"
               className="text-text-gray hover:text-white transition-colors p-2 rounded-full hover:bg-white/5 overflow-hidden relative w-8 h-8 flex items-center justify-center"
             >
               <AnimatePresence mode="wait" initial={false}>

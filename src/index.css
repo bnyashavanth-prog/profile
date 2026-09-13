@@ -18,5 +18,53 @@
     color: white;
     font-family: var(--font-sans);
     scroll-behavior: smooth;
+    transition: background-color 0.3s ease, color 0.3s ease;
   }
+}
+
+/* Light Theme Overrides */
+html.light, html.light body {
+  background-color: #f8f9fa !important;
+  color: #111827 !important;
+}
+
+html.light {
+  --color-dark-bg: #f8f9fa;
+  --color-dark-card: #ffffff;
+  --color-text-gray: #4b5563;
+  --color-border-subtle: rgba(0, 0, 0, 0.1);
+  --color-border-orange: rgba(245, 166, 35, 0.4);
+}
+
+html.light .bg-dark-bg {
+  background-color: #f8f9fa !important;
+}
+
+html.light .bg-dark-card {
+  background-color: #ffffff !important;
+  box-shadow: 0 4px 20px -2px rgba(0, 0, 0, 0.05);
+}
+
+html.light .text-white {
+  color: #111827 !important;
+}
+
+html.light .text-text-gray {
+  color: #4b5563 !important;
+}
+
+html.light .border-border-subtle {
+  border-color: rgba(0, 0, 0, 0.1) !important;
+}
+
+html.light .text-white\/10 {
+  color: rgba(0, 0, 0, 0.08) !important;
+}
+
+html.light .text-white\/90 {
+  color: #1f2937 !important;
+}
+
+html.light .selection\:bg-accent-orange {
+  selection-background-color: #F5A623;
 }
