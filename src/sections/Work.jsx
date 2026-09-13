@@ -31,6 +31,18 @@ export function Work() {
       description: 'Digital research administration platform supporting the academic research lifecycle — from candidate registration and supervisor allocation to RAC reviews, progress reports, publications, examinations, and graduation.',
       highlight: false,
       link: 'https://mitm-rd.vercel.app/'
+    },
+    {
+      id: '05', title: 'SS Build', subtitle: 'Construction Materials & Logistics Platform', categories: ['FULL STACK', 'SAAS'],
+      description: 'A full-stack platform for booking sand, stone, and tar construction materials with truck fleet management, live GPS delivery tracking, and a staff admin portal — connecting customers, drivers, and operations in one system.',
+      highlight: false,
+      link: 'https://ss-builds.vercel.app'
+    },
+    {
+      id: '06', title: 'UdyogaMITra', subtitle: 'MITM College Placement Portal', categories: ['FULL STACK', 'SAAS'],
+      description: 'The official campus placement management platform for MITM College, connecting students with recruiting companies through job drives, applications, and placement tracking — built to streamline the college\'s end-to-end recruitment process.',
+      highlight: false,
+      link: 'https://mit-place-pro-five.vercel.app'
     }
   ];
 
