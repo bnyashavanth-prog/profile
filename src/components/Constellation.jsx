@@ -1,23 +1,48 @@
-import React from 'react';
-import { motion } from 'framer-motion';
+import React, { useEffect, useState } from 'react';
+import { motion, useSpring, useReducedMotion } from 'framer-motion';
 
 export function Constellation({ labels = [], className = '' }) {
-  // SVG points for the constellation network
-  const nodes = [
-    { x: 20, y: 30 },
-    { x: 80, y: 15 },
-    { x: 50, y: 50 },
-    { x: 15, y: 75 },
-    { x: 85, y: 80 },
-    { x: 40, y: 90 }
-  ];
+  const prefersReducedMotion = useReducedMotion();
+  const [mousePos, setMousePos] = useState({ x: 0, y: 0 });
+  
+  // Parallax spring
+  const springX = useSpring(0, { stiffness: 50, damping: 20 });
+  const springY = useSpring(0, { stiffness: 50, damping: 20 });
 
-  const connections = [
-    [0, 2], [1, 2], [2, 3], [2, 4], [3, 5], [4, 5]
+  useEffect(() => {
+    if (prefersReducedMotion) return;
+    const handleMouseMove = (e) => {
+      const { innerWidth, innerHeight } = window;
+      const x = (e.clientX / innerWidth - 0.5) * 20; // max +/- 10px
+      const y = (e.clientY / innerHeight - 0.5) * 20;
+      springX.set(x);
+      springY.set(y);
+    };
+    window.addEventListener('mousemove', handleMouseMove);
+    return () => window.removeEventListener('mousemove', handleMouseMove);
+  }, [springX, springY, prefersReducedMotion]);
+
+  const nodes = [
+    { x: 20, y: 30 }, { x: 80, y: 15 }, { x: 50, y: 50 }, 
+    { x: 15, y: 75 }, { x: 85, y: 80 }, { x: 40, y: 90 }
   ];
+  const connections = [[0, 2], [1, 2], [2, 3], [2, 4], [3, 5], [4, 5]];
+  
+  // Random embers
+  const embers = Array.from({ length: 15 }).map((_, i) => ({
+    id: i,
+    x: Math.random() * 100,
+    y: Math.random() * 100,
+    duration: 10 + Math.random() * 20,
+    delay: Math.random() * 5,
+    size: Math.random() * 2 + 1
+  }));
 
   return (
-    <div className={`relative w-full h-full min-h-[400px] overflow-hidden ${className}`}>
+    <motion.div 
+      className={`absolute inset-0 overflow-hidden ${className}`}
+      style={{ x: springX, y: springY }}
+    >
       <svg className="absolute inset-0 w-full h-full" preserveAspectRatio="xMidYMid slice">
         <defs>
           <filter id="glow">
@@ -29,24 +54,24 @@ export function Constellation({ labels = [], className = '' }) {
           </filter>
         </defs>
         
-        {/* Draw lines */}
+        {/* Draw lines with shimmer */}
         {connections.map(([i, j], idx) => {
           const p1 = nodes[i];
           const p2 = nodes[j];
           return (
-            <motion.line
-              key={`line-${idx}`}
-              x1={`${p1.x}%`}
-              y1={`${p1.y}%`}
-              x2={`${p2.x}%`}
-              y2={`${p2.y}%`}
-              stroke="var(--color-accent-orange)"
-              strokeWidth="0.5"
-              strokeOpacity="0.3"
-              initial={{ pathLength: 0, opacity: 0 }}
-              animate={{ pathLength: 1, opacity: 1 }}
-              transition={{ duration: 1.5, delay: idx * 0.2 }}
-            />
+            <g key={`line-group-${idx}`}>
+              <line x1={`${p1.x}%`} y1={`${p1.y}%`} x2={`${p2.x}%`} y2={`${p2.y}%`} stroke="rgba(245, 166, 35, 0.1)" strokeWidth="0.5" />
+              <motion.line
+                x1={`${p1.x}%`} y1={`${p1.y}%`} x2={`${p2.x}%`} y2={`${p2.y}%`}
+                stroke="var(--color-accent-orange)"
+                strokeWidth="1"
+                strokeOpacity="0.5"
+                strokeDasharray="100%"
+                initial={{ strokeDashoffset: "100%" }}
+                animate={{ strokeDashoffset: ["100%", "-100%"] }}
+                transition={{ duration: 4, repeat: Infinity, ease: "linear", delay: idx * 0.8 }}
+              />
+            </g>
           );
         })}
         
@@ -59,37 +84,40 @@ export function Constellation({ labels = [], className = '' }) {
             r="2"
             fill="var(--color-accent-orange)"
             filter="url(#glow)"
-            initial={{ scale: 0, opacity: 0 }}
-            animate={{ scale: 1, opacity: [0.5, 1, 0.5] }}
-            transition={{ 
-              scale: { duration: 0.5, delay: idx * 0.1 },
-              opacity: { duration: 2, repeat: Infinity, repeatType: 'reverse', delay: idx * 0.2 }
-            }}
+            animate={{ scale: [1, 1.15, 1], opacity: [0.4, 1, 0.4] }}
+            transition={{ duration: 2 + (idx % 3), repeat: Infinity, ease: "easeInOut", delay: idx * 0.2 }}
           />
         ))}
       </svg>
       
+      {/* Floating Embers */}
+      {embers.map(ember => (
+        <motion.div
+          key={ember.id}
+          className="absolute rounded-full bg-accent-orange"
+          style={{ width: ember.size, height: ember.size, left: `${ember.x}%`, top: `${ember.y}%` }}
+          initial={{ y: 0, opacity: 0 }}
+          animate={{ y: -100, opacity: [0, 0.8, 0] }}
+          transition={{ duration: ember.duration, repeat: Infinity, ease: "linear", delay: ember.delay }}
+        />
+      ))}
+      
       {/* Floating Labels */}
       {labels.map((label, idx) => {
-        // Position labels near specific nodes
         const node = nodes[idx % nodes.length];
         return (
           <motion.div
             key={idx}
             className="absolute font-mono text-[10px] sm:text-xs text-text-gray tracking-widest whitespace-nowrap"
-            style={{ 
-              left: `${node.x}%`, 
-              top: `${node.y}%`,
-              transform: 'translate(-50%, -200%)'
-            }}
-            initial={{ y: 10, opacity: 0 }}
-            animate={{ y: 0, opacity: 1 }}
-            transition={{ delay: 1 + idx * 0.2 }}
+            style={{ left: `${node.x}%`, top: `${node.y}%`, x: "-50%", y: "-200%" }}
+            initial={{ y: -200 }}
+            animate={{ y: ["-200%", "-230%", "-200%"] }}
+            transition={{ duration: 4 + (idx % 2), repeat: Infinity, ease: "easeInOut", delay: idx * 0.5 }}
           >
             [ {label} ]
           </motion.div>
         );
       })}
-    </div>
+    </motion.div>
   );
 }
