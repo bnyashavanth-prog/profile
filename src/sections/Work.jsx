@@ -105,20 +105,20 @@ export function Work() {
                     project.link ? 'cursor-pointer' : ''
                   } ${
                     project.highlight 
-                      ? 'border-accent-orange shadow-[0_0_30px_rgba(245,166,35,0.1)]' 
-                      : 'border-border-subtle hover:border-accent-orange/50'
+                      ? 'border-accent-orange shadow-[0_0_30px_rgba(245,166,35,0.15)]' 
+                      : 'border-white/15 hover:border-accent-orange/60 shadow-lg'
                   }`}
                 >
                   {/* Framer motion wrapper for translateY lift on hover */}
-                  <motion.div variants={{ hover: { y: -6 } }} className="absolute inset-0 border border-transparent rounded-2xl group-hover:border-accent-orange/50 pointer-events-none transition-colors" />
+                  <motion.div variants={{ hover: { y: -6 } }} className="absolute inset-0 border border-transparent rounded-2xl group-hover:border-accent-orange/60 pointer-events-none transition-colors" />
                   
                   <div className="flex justify-between items-start mb-6 relative z-10">
-                    <div className="font-mono text-4xl font-bold text-white/10 group-hover:text-accent-orange/20 transition-colors">
+                    <div className="font-mono text-4xl font-bold text-accent-orange/40 group-hover:text-accent-orange transition-colors">
                       {project.id}
                     </div>
                     <motion.div 
                       variants={{ hover: { rotate: 45, backgroundColor: "var(--color-accent-orange)", color: "var(--color-dark-bg)", borderColor: "var(--color-accent-orange)" } }}
-                      className="w-10 h-10 rounded-full border border-border-subtle flex items-center justify-center transition-colors"
+                      className="w-10 h-10 rounded-full border border-white/20 bg-white/5 flex items-center justify-center text-white/80 transition-colors"
                     >
                       <ArrowUpRight size={18} />
                     </motion.div>
@@ -128,7 +128,7 @@ export function Work() {
                     {project.title}
                   </h3>
                   
-                  <div className="font-mono text-xs text-accent-orange mb-4 tracking-wider relative z-10">
+                  <div className="font-mono text-xs text-accent-orange mb-4 tracking-wider font-semibold relative z-10">
                     {project.subtitle}
                   </div>
                   

@@ -2,12 +2,12 @@
 
 @theme {
   --color-dark-bg: #0a0908;
-  --color-dark-card: #0c0b0a;
+  --color-dark-card: #141312;
   --color-accent-orange: #F5A623;
   --color-accent-hover: #e0961f;
-  --color-text-gray: #C9C9C9;
-  --color-border-subtle: rgba(255, 255, 255, 0.05);
-  --color-border-orange: rgba(245, 166, 35, 0.2);
+  --color-text-gray: #d1d5db;
+  --color-border-subtle: rgba(255, 255, 255, 0.12);
+  --color-border-orange: rgba(245, 166, 35, 0.3);
   --font-sans: "Inter", system-ui, sans-serif;
   --font-mono: "JetBrains Mono", "Fira Code", monospace;
 }
