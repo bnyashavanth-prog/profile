@@ -14,7 +14,7 @@ export function About() {
 
   return (
     <section id="about" className="py-24 px-6 border-t border-border-subtle bg-dark-bg relative overflow-hidden">
-      <div className="max-w-7xl mx-auto w-full grid grid-cols-1 lg:grid-cols-2 gap-20 lg:gap-24 items-center relative z-10">
+      <div className="max-w-7xl mx-auto w-full grid grid-cols-1 lg:grid-cols-2 gap-16 lg:gap-24 items-center relative z-10">
         
         {/* Left Column - Text */}
         <motion.div
@@ -70,16 +70,16 @@ export function About() {
           </motion.div>
         </motion.div>
 
-        {/* Right Column - Graphic */}
+        {/* Right Column - Graphic & Photo */}
         <motion.div
-          className="relative h-[450px] lg:h-[600px] w-full flex items-center justify-center mt-12 lg:mt-0"
+          className="relative flex flex-col items-center justify-center mt-12 lg:mt-0"
           initial={{ opacity: 0, x: 40 }}
           whileInView={{ opacity: 1, x: 0 }}
           viewport={{ once: true, margin: "-100px" }}
           transition={{ duration: 0.8, delay: 0.4, ease: "easeOut" }}
         >
           {/* Constellation Background inside the image column */}
-          <div className="absolute inset-0 z-0">
+          <div className="absolute inset-0 z-0 pointer-events-none">
             <Constellation 
               labels={['ENGINEERING', 'QUALITY', 'ARCHITECTURE']} 
               className="opacity-70 scale-110"
@@ -87,38 +87,40 @@ export function About() {
           </div>
           
           {/* Image Container with Vignette Blending */}
-          <div className="relative w-full h-full max-w-[450px] mx-auto z-10 pointer-events-none flex items-center justify-center">
+          <div className="relative w-full max-w-[420px] aspect-[4/5] mx-auto z-10 flex flex-col items-center justify-center">
             {/* Soft glowing halo behind image */}
             <div className="absolute inset-0 bg-accent-orange/5 blur-[80px] rounded-full pointer-events-none"></div>
 
-            <div className="relative w-full h-full overflow-hidden flex items-center justify-center"
-                 style={{ WebkitMaskImage: 'radial-gradient(ellipse at center, black 40%, transparent 75%)', maskImage: 'radial-gradient(ellipse at center, black 40%, transparent 75%)' }}>
-              
+            <div 
+              className="relative w-full h-full overflow-hidden flex items-center justify-center"
+              style={{ WebkitMaskImage: 'radial-gradient(ellipse at center, black 45%, transparent 75%)', maskImage: 'radial-gradient(ellipse at center, black 45%, transparent 75%)' }}
+            >
               <img 
-                src="/portrait.jpg" 
-                alt="Yashavanth BN" 
-                className="w-full h-full object-cover pointer-events-auto"
-                style={{ 
-                  objectPosition: '80% 30%',
-                  filter: 'brightness(0.9) contrast(1.1) sepia(0.2) hue-rotate(-5deg)'
-                }}
+                src="/about-portrait.jpg" 
+                alt="Yashavanth BN - Blue Blazer Portrait" 
+                className="w-full h-full object-cover pointer-events-auto filter brightness-95 contrast-105"
+                style={{ objectPosition: 'center top' }}
               />
               
-              {/* Additional Vignette Overlays for deep integration */}
-              <div className="absolute inset-0 bg-gradient-to-t from-dark-bg via-transparent to-dark-bg opacity-80 pointer-events-none mix-blend-multiply"></div>
-              <div className="absolute inset-0 bg-gradient-to-r from-dark-bg via-transparent to-dark-bg opacity-80 pointer-events-none mix-blend-multiply"></div>
+              {/* Additional Vignette Overlays */}
+              <div className="absolute inset-0 bg-gradient-to-t from-dark-bg via-transparent to-transparent opacity-90 pointer-events-none"></div>
+              <div className="absolute inset-0 bg-gradient-to-r from-dark-bg via-transparent to-transparent opacity-50 pointer-events-none"></div>
             </div>
-            
-            {/* Subtle floating overlay elements to integrate the photo with the tech theme */}
-            <motion.div 
-              className="absolute right-4 bottom-1/4 w-1 h-12 bg-accent-orange/30 rounded-full"
-              animate={{ opacity: [0.3, 0.8, 0.3] }} transition={{ duration: 3, repeat: Infinity }}
-            ></motion.div>
-            <motion.div 
-              className="absolute left-8 top-1/4 w-2 h-2 rounded-full border border-accent-orange/50"
-              animate={{ scale: [1, 1.5, 1], opacity: [0.5, 0, 0.5] }} transition={{ duration: 4, repeat: Infinity }}
-            ></motion.div>
           </div>
+
+          {/* Styled Personal Info Caption Card */}
+          <motion.div 
+            initial={{ opacity: 0, y: 15 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ delay: 0.6, duration: 0.5 }}
+            className="mt-6 z-20 border-l-2 border-accent-orange pl-4 py-1.5 font-mono bg-dark-card/60 backdrop-blur-sm rounded-r-lg max-w-[420px] w-full"
+          >
+            <div className="text-accent-orange font-bold text-sm tracking-wider uppercase">Yashavanth BN</div>
+            <div className="text-white text-xs tracking-wide mt-0.5 font-mono">COO · SOFTWARE DEVELOPER</div>
+            <div className="text-text-gray text-xs mt-1">Mysore, Karnataka, India</div>
+            <div className="text-accent-orange/80 text-[11px] mt-1.5 font-mono italic">// Building with purpose</div>
+          </motion.div>
         </motion.div>
       </div>
     </section>
