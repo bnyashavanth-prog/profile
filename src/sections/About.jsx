@@ -98,7 +98,7 @@ export function About() {
               <img 
                 src="/about-portrait.jpg" 
                 alt="Yashavanth BN - Blue Blazer Portrait" 
-                className="w-full h-full object-cover pointer-events-auto filter brightness-95 contrast-105"
+                className="w-full h-full object-cover pointer-events-auto filter brightness-95 contrast-105 portrait-blend"
                 style={{ objectPosition: 'center top' }}
               />
               

@@ -65,6 +65,15 @@ html.light .text-white\/90 {
   color: #1f2937 !important;
 }
 
+html.light .portrait-blend {
+  mix-blend-mode: multiply;
+  filter: contrast(1.08) brightness(1.02);
+}
+
+html:not(.light) .portrait-blend {
+  mix-blend-mode: normal;
+}
+
 html.light .selection\:bg-accent-orange {
   selection-background-color: #F5A623;
 }
