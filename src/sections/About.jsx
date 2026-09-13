@@ -79,10 +79,10 @@ export function About() {
             <div className="w-[350px] h-[450px] bg-dark-card border border-border-subtle rounded-2xl overflow-hidden shadow-2xl relative pointer-events-auto">
               <div className="absolute inset-0 bg-gradient-to-tr from-accent-orange/10 to-transparent z-10 pointer-events-none"></div>
               <img 
-                src="/portrait.jpg" 
+                src="/about-portrait.jpg" 
                 alt="Yashavanth BN Portrait" 
-                className="w-full h-full object-cover object-right"
-                style={{ objectPosition: '75% center' }}
+                className="w-full h-full object-cover"
+                style={{ objectPosition: 'center 20%' }}
               />
             </div>
           </div>
