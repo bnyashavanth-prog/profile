@@ -5,24 +5,47 @@ import { CheckCircle2, Send } from 'lucide-react';
 export function Contact() {
   const [formData, setFormData] = useState({ name: '', email: '', message: '' });
   const [isSubmitted, setIsSubmitted] = useState(false);
+  const [isSending, setIsSending] = useState(false);
 
   const handleChange = (e) => {
     const { id, value } = e.target;
     setFormData((prev) => ({ ...prev, [id]: value }));
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     if (!formData.name || !formData.email || !formData.message) return;
 
-    // Trigger mailto with prefilled details
-    const subject = encodeURIComponent(`Portfolio Inquiry from ${formData.name}`);
-    const body = encodeURIComponent(
-      `Name: ${formData.name}\nEmail: ${formData.email}\n\nMessage:\n${formData.message}`
-    );
-    window.location.href = `mailto:bnyashavanth@gmail.com?subject=${subject}&body=${body}`;
+    setIsSending(true);
 
-    setIsSubmitted(true);
+    try {
+      await fetch("https://formsubmit.co/ajax/bnyashavanth@gmail.com", {
+        method: "POST",
+        headers: { 
+          "Content-Type": "application/json",
+          "Accept": "application/json"
+        },
+        body: JSON.stringify({
+          name: formData.name,
+          email: formData.email,
+          message: formData.message,
+          _subject: `New Portfolio Inquiry from ${formData.name}`,
+          _captcha: "false"
+        })
+      });
+      setIsSubmitted(true);
+    } catch (err) {
+      console.error("Failed to send message via AJAX:", err);
+      // Fallback to mailto link
+      const subject = encodeURIComponent(`Portfolio Inquiry from ${formData.name}`);
+      const body = encodeURIComponent(
+        `Name: ${formData.name}\nEmail: ${formData.email}\n\nMessage:\n${formData.message}`
+      );
+      window.location.href = `mailto:bnyashavanth@gmail.com?subject=${subject}&body=${body}`;
+      setIsSubmitted(true);
+    } finally {
+      setIsSending(false);
+    }
   };
 
   const handleReset = () => {
@@ -124,10 +147,20 @@ export function Contact() {
                   <div className="pt-4">
                     <button 
                       type="submit" 
-                      className="w-full inline-flex items-center justify-center gap-2 rounded-full bg-accent-orange text-dark-bg px-8 py-4 font-bold hover:bg-accent-hover hover:scale-[1.02] active:scale-[0.98] transition-all duration-300 cursor-pointer"
+                      disabled={isSending}
+                      className="w-full inline-flex items-center justify-center gap-2 rounded-full bg-accent-orange text-dark-bg px-8 py-4 font-bold hover:bg-accent-hover hover:scale-[1.02] active:scale-[0.98] transition-all duration-300 cursor-pointer disabled:opacity-70 disabled:cursor-not-allowed"
                     >
-                      <Send size={18} />
-                      Send Message
+                      {isSending ? (
+                        <>
+                          <div className="w-4 h-4 border-2 border-dark-bg border-t-transparent rounded-full animate-spin"></div>
+                          Sending...
+                        </>
+                      ) : (
+                        <>
+                          <Send size={18} />
+                          Send Message
+                        </>
+                      )}
                     </button>
                   </div>
                 </motion.form>
