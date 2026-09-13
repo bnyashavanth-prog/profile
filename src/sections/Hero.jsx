@@ -20,7 +20,7 @@ export function Hero() {
           </div>
           
           <h1 className="text-6xl sm:text-7xl md:text-[80px] font-bold leading-none tracking-tight mb-6">
-            <span className="block text-white">Yashavnth</span>
+            <span className="block text-white">Yashavanth</span>
             <span className="block text-accent-orange">BN</span>
           </h1>
           
@@ -76,7 +76,7 @@ export function Hero() {
               <div className="absolute inset-0 bg-gradient-to-t from-dark-bg to-transparent opacity-60 z-10 pointer-events-none"></div>
               <img 
                 src="/portrait.jpg" 
-                alt="Yashavnth BN Portrait" 
+                alt="Yashavanth BN Portrait" 
                 className="w-full h-full object-cover object-right"
                 style={{ objectPosition: '75% center' }}
               />
@@ -89,7 +89,7 @@ export function Hero() {
       {/* Vertical Rotated Text */}
       <div className="absolute right-6 top-1/2 -translate-y-1/2 hidden xl:block">
         <div className="origin-center rotate-90 whitespace-nowrap font-mono text-xs tracking-[0.3em] text-text-gray/50">
-          / YASHAVNTH BN — PORTFOLIO /
+          / YASHAVANTH BN — PORTFOLIO /
         </div>
       </div>
     </section>

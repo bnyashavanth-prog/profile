@@ -80,7 +80,7 @@ export function About() {
               <div className="absolute inset-0 bg-gradient-to-tr from-accent-orange/10 to-transparent z-10 pointer-events-none"></div>
               <img 
                 src="/portrait.jpg" 
-                alt="Yashavnth BN Portrait" 
+                alt="Yashavanth BN Portrait" 
                 className="w-full h-full object-cover object-right"
                 style={{ objectPosition: '75% center' }}
               />

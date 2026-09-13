@@ -52,7 +52,7 @@ export function Navbar() {
           <div className="flex flex-col md:flex-row items-center justify-between font-mono text-xs sm:text-sm text-text-gray">
             <div className="flex items-center text-accent-orange mb-4 md:mb-0">
               <span className="mr-2">❯</span>
-              <span>yashavnth@portfolio:~</span>
+              <span>yashavanth@portfolio:~</span>
             </div>
             
             <nav className="flex items-center space-x-2 sm:space-x-4 mb-4 md:mb-0">

@@ -91,7 +91,7 @@ export function Contact() {
       
       {/* Footer minimal */}
       <div className="mt-32 max-w-7xl mx-auto flex flex-col md:flex-row justify-between items-center border-t border-border-subtle pt-8 text-xs font-mono text-text-gray">
-        <div>&copy; {new Date().getFullYear()} Yashavnth BN. All rights reserved.</div>
+        <div>&copy; {new Date().getFullYear()} Yashavanth BN. All rights reserved.</div>
         <div className="mt-4 md:mt-0 flex space-x-6">
           <a href="#" className="hover:text-accent-orange transition-colors">GITHUB</a>
           <a href="#" className="hover:text-accent-orange transition-colors">LINKEDIN</a>
