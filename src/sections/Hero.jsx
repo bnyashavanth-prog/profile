@@ -81,10 +81,10 @@ export function Hero() {
         <Constellation labels={['PRODUCT', 'STRATEGY', 'SYSTEMS', 'TECHNOLOGY']} />
       </div>
 
-      <motion.div style={{ y: yParallax }} className="max-w-7xl mx-auto w-full grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-8 items-center relative z-10">
+      <motion.div style={{ y: yParallax }} className="max-w-7xl mx-auto w-full grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-8 items-center relative z-10">
         
         {/* Left Content */}
-        <div>
+        <div className="lg:col-span-7 xl:col-span-8">
           <motion.div custom={4} variants={stagger} initial="hidden" animate="show" className="font-mono text-sm text-text-gray mb-6">
             // BUILDING DIGITAL SOLUTIONS
           </motion.div>
@@ -131,25 +131,16 @@ export function Hero() {
         </div>
 
         {/* Right Content - Portrait */}
-        <div className="relative h-[500px] lg:h-[700px] w-full flex items-center justify-center [perspective:1000px]">
+        <div className="lg:col-span-5 xl:col-span-4 relative h-[450px] lg:h-[550px] w-full flex items-center justify-center [perspective:1000px]">
           <TiltCard>
-            <div className="w-[300px] h-[400px] lg:w-[400px] lg:h-[550px] bg-dark-card border border-border-subtle rounded-2xl overflow-hidden relative shadow-2xl flex items-center justify-center group pointer-events-auto transition-all duration-300 group-hover:border-accent-orange/50 group-hover:shadow-[0_20px_50px_rgba(245,166,35,0.1)] mx-auto mt-12 lg:mt-0">
+            <div className="w-full max-w-[380px] aspect-[4/5] max-h-[480px] bg-dark-card border border-border-subtle rounded-2xl overflow-hidden relative shadow-2xl flex items-center justify-center group pointer-events-auto transition-all duration-300 group-hover:border-accent-orange/50 group-hover:shadow-[0_20px_50px_rgba(245,166,35,0.1)] mx-auto mt-12 lg:mt-0">
               <div className="absolute inset-0 bg-gradient-to-t from-dark-bg to-transparent opacity-60 z-10 pointer-events-none"></div>
-              
-              {/* Nested UI Preview element */}
-              <div className="absolute top-4 left-4 right-4 z-20 flex justify-between items-center opacity-50 font-mono text-[8px] text-text-gray pointer-events-none">
-                <div>...ork · skills · contact</div>
-                <div className="flex items-center gap-1">
-                  <motion.div animate={{ opacity: [1, 0.4, 1] }} transition={{ duration: 1.5, repeat: Infinity }} className="w-1.5 h-1.5 rounded-full bg-green-500" />
-                  STATUS: ONLINE
-                </div>
-              </div>
 
               <img 
                 src="/portrait.jpg" 
                 alt="Yashavanth BN Portrait" 
                 className="w-full h-full object-cover"
-                style={{ objectPosition: '75% center' }}
+                style={{ objectPosition: 'center top' }}
               />
               <div className="absolute inset-0 ring-1 ring-inset ring-white/10 rounded-2xl pointer-events-none z-20"></div>
             </div>
@@ -158,7 +149,7 @@ export function Hero() {
       </motion.div>
 
       {/* Vertical Rotated Text */}
-      <div className="absolute right-6 top-1/2 -translate-y-1/2 hidden xl:block z-10 h-64 overflow-hidden">
+      <div className="absolute right-0 xl:-right-12 2xl:right-6 top-1/2 -translate-y-1/2 hidden lg:block z-10 h-64 overflow-hidden">
         <motion.div 
           className="font-mono text-xs tracking-[0.3em] text-text-gray/50 flex flex-col items-center gap-8"
           initial={{ opacity: 0 }}
