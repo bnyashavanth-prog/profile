@@ -65,7 +65,7 @@ export function Navbar() {
             <div className="w-full md:w-auto flex items-center justify-between">
               <motion.div variants={navContainer} className="flex items-center text-accent-orange">
                 <span className="mr-2 font-bold text-accent-orange">❯</span>
-                <span className="text-white font-medium text-xs sm:text-sm">yashavnth@portfolio:~</span>
+                <span className="text-white font-medium text-xs sm:text-sm">yashavanth@portfolio:~</span>
               </motion.div>
 
               {/* Mobile theme button for terminal nav on small screens */}
