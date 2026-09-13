@@ -104,14 +104,20 @@ export function Constellation({ labels = [], className = '' }) {
       
       {/* Floating Labels */}
       {labels.map((label, idx) => {
-        const node = nodes[idx % nodes.length];
+        // Safe peripheral coordinates to avoid overlapping the central portrait
+        const safePositions = [
+          { x: 10, y: 15 }, { x: 85, y: 15 },
+          { x: 10, y: 85 }, { x: 85, y: 85 },
+          { x: 50, y: 10 }, { x: 50, y: 90 }
+        ];
+        const pos = safePositions[idx % safePositions.length];
         return (
           <motion.div
             key={idx}
             className="absolute font-mono text-[10px] sm:text-xs text-text-gray tracking-widest whitespace-nowrap"
-            style={{ left: `${node.x}%`, top: `${node.y}%`, x: "-50%", y: "-200%" }}
-            initial={{ y: -200 }}
-            animate={{ y: ["-200%", "-230%", "-200%"] }}
+            style={{ left: `${pos.x}%`, top: `${pos.y}%`, x: "-50%", y: "-50%" }}
+            initial={{ y: "-50%" }}
+            animate={{ y: ["-50%", "-80%", "-50%"] }}
             transition={{ duration: 4 + (idx % 2), repeat: Infinity, ease: "easeInOut", delay: idx * 0.5 }}
           >
             [ {label} ]
