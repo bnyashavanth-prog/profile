@@ -43,7 +43,7 @@ export function Navbar() {
       initial="hidden"
       animate="show"
       className={`fixed top-0 left-0 right-0 z-50 transition-colors duration-300 ${
-        isScrolled ? 'bg-dark-bg/90 backdrop-blur-md border-b border-border-subtle py-4' : 'bg-transparent py-6'
+        isScrolled ? 'bg-dark-bg/90 backdrop-blur-md border-b border-border-subtle py-4' : 'bg-dark-bg/80 backdrop-blur-sm border-b border-border-subtle/40 py-4'
       }`}
     >
       <div className="max-w-7xl mx-auto px-6">
@@ -51,32 +51,38 @@ export function Navbar() {
           /* Terminal Style Hero Nav */
           <div className="flex flex-col md:flex-row items-center justify-between font-mono text-xs sm:text-sm text-text-gray">
             <motion.div variants={navContainer} className="flex items-center text-accent-orange mb-4 md:mb-0">
-              <span className="mr-2">❯</span>
-              <span>yashavanth@portfolio:~</span>
+              <span className="mr-2 font-bold text-accent-orange">❯</span>
+              <span className="text-white">yashavnth@portfolio:~</span>
             </motion.div>
             
-            <motion.nav variants={navContainer} className="flex items-center space-x-2 sm:space-x-4 mb-4 md:mb-0">
+            <motion.nav variants={navContainer} className="flex items-center space-x-3 sm:space-x-5 mb-4 md:mb-0">
               {['home', 'about', 'work', 'skills', 'contact'].map((item, idx) => (
                 <React.Fragment key={item}>
-                  <a href={`#${item}`} onClick={(e) => scrollTo(e, `#${item}`)} className="hover:text-white transition-colors relative group">
+                  <a 
+                    href={`#${item}`} 
+                    onClick={(e) => scrollTo(e, `#${item}`)} 
+                    className={`hover:text-white transition-colors relative group ${item === 'home' ? 'text-accent-orange font-medium' : 'text-text-gray'}`}
+                  >
                     {item}
-                    <span className="absolute -bottom-1 left-0 w-0 h-[1px] bg-accent-orange transition-all duration-300 group-hover:w-full"></span>
+                    <span className={`absolute -bottom-1 left-0 h-[2px] bg-accent-orange transition-all duration-300 ${item === 'home' ? 'w-full' : 'w-0 group-hover:w-full'}`}></span>
                   </a>
-                  {idx < 4 && <span>·</span>}
+                  {idx < 4 && <span className="text-border-subtle">·</span>}
                 </React.Fragment>
               ))}
             </motion.nav>
             
-            <motion.div variants={navContainer} className="flex items-center space-x-4">
-              <div className="flex items-center text-green-500">
+            <motion.div variants={navContainer} className="flex items-center space-x-6">
+              <div className="flex items-center text-accent-orange">
                 <motion.span 
-                  className="mr-2 text-[10px]"
-                  animate={{ opacity: [1, 0.4, 1] }}
+                  className="mr-2 text-xs text-accent-orange"
+                  animate={{ opacity: [1, 0.3, 1] }}
                   transition={{ duration: 1.5, repeat: Infinity, ease: "easeInOut" }}
                 >●</motion.span>
-                <span>STATUS: ONLINE</span>
+                <span className="text-text-gray tracking-wider">STATUS: <span className="text-white font-medium">ONLINE</span></span>
               </div>
-              <div className="hidden sm:block text-accent-orange">{time.toLocaleTimeString('en-US', { hour12: true })}</div>
+              <div className="hidden sm:block text-accent-orange font-mono font-medium tracking-wider">
+                {time.toLocaleTimeString('en-US', { hour12: true })}
+              </div>
             </motion.div>
           </div>
         ) : (

@@ -1,66 +1,35 @@
-import React, { useEffect, useState, useRef } from 'react';
-import { motion, useScroll, useTransform, useSpring, useReducedMotion } from 'framer-motion';
+import React, { useEffect, useState } from 'react';
+import { motion, useScroll, useTransform } from 'framer-motion';
 import { Button } from '../components/Button';
 import { Constellation } from '../components/Constellation';
 
-const CountUp = ({ to, duration = 0.8, delay = 0 }) => {
+const CountUp = ({ to, duration = 2, delay = 0 }) => {
   const [count, setCount] = useState(0);
+
   useEffect(() => {
-    let startTime;
-    let animationFrame;
-    const animate = (time) => {
-      if (!startTime) startTime = time;
-      const progress = Math.min((time - startTime - delay * 1000) / (duration * 1000), 1);
-      if (progress > 0) setCount(Math.floor(progress * to));
-      if (progress < 1) animationFrame = requestAnimationFrame(animate);
-      else setCount(to);
+    let startTimestamp = null;
+    let animationFrame = null;
+
+    const step = (timestamp) => {
+      if (!startTimestamp) startTimestamp = timestamp;
+      const progress = Math.min((timestamp - startTimestamp) / (duration * 1000), 1);
+      setCount(Math.floor(progress * to));
+      if (progress < 1) {
+        animationFrame = requestAnimationFrame(step);
+      }
     };
-    animationFrame = requestAnimationFrame(animate);
-    return () => cancelAnimationFrame(animationFrame);
+
+    const timer = setTimeout(() => {
+      animationFrame = requestAnimationFrame(step);
+    }, delay * 1000);
+
+    return () => {
+      clearTimeout(timer);
+      if (animationFrame) cancelAnimationFrame(animationFrame);
+    };
   }, [to, duration, delay]);
+
   return <span>{count}</span>;
-};
-
-const TiltCard = ({ children }) => {
-  const ref = useRef(null);
-  const x = useSpring(0, { stiffness: 300, damping: 30 });
-  const y = useSpring(0, { stiffness: 300, damping: 30 });
-  const prefersReducedMotion = useReducedMotion();
-
-  const handleMouseMove = (e) => {
-    if (prefersReducedMotion) return;
-    const rect = ref.current.getBoundingClientRect();
-    const width = rect.width;
-    const height = rect.height;
-    const mouseX = e.clientX - rect.left;
-    const mouseY = e.clientY - rect.top;
-    const xPct = mouseX / width - 0.5;
-    const yPct = mouseY / height - 0.5;
-    x.set(xPct);
-    y.set(yPct);
-  };
-  const handleMouseLeave = () => {
-    x.set(0);
-    y.set(0);
-  };
-  const rotateX = useTransform(y, [-0.5, 0.5], ["4deg", "-4deg"]);
-  const rotateY = useTransform(x, [-0.5, 0.5], ["-4deg", "4deg"]);
-
-  return (
-    <motion.div 
-      ref={ref}
-      onMouseMove={handleMouseMove}
-      onMouseLeave={handleMouseLeave}
-      style={{ rotateX, rotateY, transformStyle: "preserve-3d" }}
-      className="relative w-full h-full perspective-1000 group cursor-default"
-      initial={{ opacity: 0, scale: 0.95, x: 40 }}
-      animate={{ opacity: 1, scale: 1, x: 0 }}
-      transition={{ duration: 0.8, delay: 0.9, ease: [0.16, 1, 0.3, 1] }}
-      whileHover={{ y: -4 }}
-    >
-      {children}
-    </motion.div>
-  );
 };
 
 export function Hero() {
@@ -76,15 +45,16 @@ export function Hero() {
   };
 
   return (
-    <section id="home" className="relative min-h-screen flex items-center pt-24 pb-12 px-6 overflow-hidden">
+    <section id="home" className="relative min-h-screen flex items-center pt-28 pb-12 overflow-hidden bg-dark-bg">
+      {/* Constellation background layer */}
       <div className="absolute inset-0 z-0">
         <Constellation labels={['PRODUCT', 'STRATEGY', 'SYSTEMS', 'TECHNOLOGY']} />
       </div>
 
-      <motion.div style={{ y: yParallax }} className="max-w-7xl mx-auto w-full grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-8 items-center relative z-10">
+      <motion.div style={{ y: yParallax }} className="max-w-7xl mx-auto w-full px-6 grid grid-cols-1 lg:grid-cols-12 gap-8 items-center relative z-10 min-h-[600px]">
         
         {/* Left Content */}
-        <div className="lg:col-span-7 xl:col-span-8">
+        <div className="lg:col-span-6 xl:col-span-6 z-20 py-8">
           <motion.div custom={4} variants={stagger} initial="hidden" animate="show" className="font-mono text-sm text-text-gray mb-6">
             // BUILDING DIGITAL SOLUTIONS
           </motion.div>
@@ -130,28 +100,30 @@ export function Hero() {
           </div>
         </div>
 
-        {/* Right Content - Portrait */}
-        <div className="lg:col-span-5 xl:col-span-4 relative h-[450px] lg:h-[550px] w-full flex items-center justify-center [perspective:1000px]">
-          <TiltCard>
-            <div className="w-full max-w-[380px] aspect-[4/5] max-h-[480px] bg-dark-card border border-border-subtle rounded-2xl overflow-hidden relative shadow-2xl flex items-center justify-center group pointer-events-auto transition-all duration-300 group-hover:border-accent-orange/50 group-hover:shadow-[0_20px_50px_rgba(245,166,35,0.1)] mx-auto mt-12 lg:mt-0">
-              <div className="absolute inset-0 bg-gradient-to-t from-dark-bg to-transparent opacity-60 z-10 pointer-events-none"></div>
-
-              <img 
-                src="/portrait.jpg" 
-                alt="Yashavanth BN Portrait" 
-                className="w-full h-full object-cover"
-                style={{ objectPosition: 'center top' }}
-              />
-              <div className="absolute inset-0 ring-1 ring-inset ring-white/10 rounded-2xl pointer-events-none z-20"></div>
-            </div>
-          </TiltCard>
+        {/* Right Content - Full Bleed Portrait Image */}
+        <div className="lg:col-span-6 xl:col-span-6 relative h-full min-h-[500px] lg:min-h-[650px] flex items-end justify-center lg:justify-end pointer-events-none">
+          <motion.div 
+            initial={{ opacity: 0, scale: 0.95 }}
+            animate={{ opacity: 1, scale: 1 }}
+            transition={{ duration: 0.9, delay: 0.5, ease: "easeOut" }}
+            className="relative w-full h-full max-w-[550px] lg:max-w-none flex items-end justify-end overflow-hidden"
+          >
+            <img 
+              src="/portrait.jpg" 
+              alt="Yashavanth BN" 
+              className="w-full h-auto max-h-[650px] object-cover object-top filter brightness-95 contrast-105 pointer-events-auto"
+            />
+            {/* Soft edge gradient fades - Left and Bottom */}
+            <div className="absolute inset-0 bg-gradient-to-r from-dark-bg via-transparent to-transparent w-1/2 z-10 pointer-events-none"></div>
+            <div className="absolute inset-0 bg-gradient-to-t from-dark-bg via-transparent to-transparent h-1/3 top-auto bottom-0 z-10 pointer-events-none"></div>
+          </motion.div>
         </div>
       </motion.div>
 
-      {/* Vertical Rotated Text */}
-      <div className="absolute right-0 xl:-right-12 2xl:right-6 top-1/2 -translate-y-1/2 hidden lg:block z-10 h-64 overflow-hidden">
+      {/* Rotated Vertical Text on far right */}
+      <div className="absolute right-4 top-1/2 -translate-y-1/2 hidden xl:block z-20 h-64 overflow-hidden pointer-events-none">
         <motion.div 
-          className="font-mono text-xs tracking-[0.3em] text-text-gray/50 flex flex-col items-center gap-8"
+          className="font-mono text-xs tracking-[0.3em] text-text-gray/40 flex flex-col items-center gap-8"
           initial={{ opacity: 0 }}
           animate={{ opacity: 1, y: ["0%", "-50%"] }}
           transition={{ opacity: { delay: 1.5, duration: 1 }, y: { repeat: Infinity, duration: 20, ease: "linear" } }}
