@@ -76,12 +76,14 @@ export function About() {
           </div>
           
           <div className="absolute inset-0 z-10 flex items-center justify-center pointer-events-none">
-            <div className="w-[350px] h-[450px] bg-dark-card border border-border-subtle rounded-2xl overflow-hidden shadow-2xl relative">
-              <div className="absolute inset-0 bg-gradient-to-tr from-accent-orange/10 to-transparent"></div>
-              <div className="text-text-gray/20 font-mono text-center absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-full px-4">
-                [ PORTRAIT ALT ]<br/>
-                <span className="text-xs mt-2 block">Alternative angle or secondary photo</span>
-              </div>
+            <div className="w-[350px] h-[450px] bg-dark-card border border-border-subtle rounded-2xl overflow-hidden shadow-2xl relative pointer-events-auto">
+              <div className="absolute inset-0 bg-gradient-to-tr from-accent-orange/10 to-transparent z-10 pointer-events-none"></div>
+              <img 
+                src="/portrait.jpg" 
+                alt="Yashavnth BN Portrait" 
+                className="w-full h-full object-cover object-right"
+                style={{ objectPosition: '75% center' }}
+              />
             </div>
           </div>
         </motion.div>

@@ -73,13 +73,14 @@ export function Hero() {
           {/* Placeholder for portrait. Since we don't have the image file, use a stylized placeholder */}
           <div className="absolute inset-0 z-10 flex items-center justify-center pointer-events-none">
             <div className="w-[300px] h-[400px] lg:w-[400px] lg:h-[550px] bg-dark-card border border-border-subtle rounded-2xl overflow-hidden relative shadow-2xl flex items-center justify-center group pointer-events-auto">
-              <div className="absolute inset-0 bg-gradient-to-t from-dark-bg to-transparent opacity-60 z-10"></div>
-              {/* If an image is provided later, replace this div with an <img> */}
-              <div className="text-text-gray/20 font-mono text-center px-4">
-                [ PORTRAIT IMAGE PLACEHOLDER ]<br/>
-                <span className="text-xs mt-2 block">Man in dark suit, white shirt</span>
-              </div>
-              <div className="absolute inset-0 ring-1 ring-inset ring-white/10 rounded-2xl"></div>
+              <div className="absolute inset-0 bg-gradient-to-t from-dark-bg to-transparent opacity-60 z-10 pointer-events-none"></div>
+              <img 
+                src="/portrait.jpg" 
+                alt="Yashavnth BN Portrait" 
+                className="w-full h-full object-cover object-right"
+                style={{ objectPosition: '75% center' }}
+              />
+              <div className="absolute inset-0 ring-1 ring-inset ring-white/10 rounded-2xl pointer-events-none z-20"></div>
             </div>
           </div>
         </motion.div>
