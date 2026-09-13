@@ -9,28 +9,28 @@ export function Work() {
 
   const projects = [
     {
-      id: '01', title: 'No-Due Portal', subtitle: 'No Due Clearance Management System', category: 'SAAS',
+      id: '01', title: 'No-Due Portal', subtitle: 'No Due Clearance Management System', categories: ['SAAS', 'FULL STACK'],
       description: 'Multi-tenant SaaS that digitizes student No Due Certificate workflows, connecting faculty, coordinators, library, accounts, HODs, and administration with automated dues, payments, approvals, and PDF certificates.',
       highlight: false
     },
     {
-      id: '02', title: 'AcadOps ERP', subtitle: 'Engineering College ERP', category: 'ERP',
+      id: '02', title: 'AcadOps ERP', subtitle: 'Engineering College ERP', categories: ['ERP', 'FULL STACK'],
       description: 'Governance-focused ERP for managing admissions, academics, attendance, internal assessments, examinations, mentorship, results, role-based access, and institutional workflows.',
       highlight: true
     },
     {
-      id: '03', title: 'SynthMind', subtitle: 'AI Research Assistant', category: 'AI',
-      description: 'An AI-powered tool designed to help researchers parse through dense academic papers, extract key methodologies, and synthesize literature reviews automatically.',
+      id: '03', title: 'MITM PlacePro', subtitle: 'Placement Management Platform', categories: ['FULL STACK', 'SAAS'],
+      description: 'Full-stack placement platform connecting students, placement administrators, and companies through job drives, assessments, interviews, feedback, recruitment workflows, and analytics.',
       highlight: false
     },
     {
-      id: '04', title: 'CodeCollab', subtitle: 'Real-time IDE & Platform', category: 'HACKATHON',
-      description: 'Award-winning hackathon project featuring a collaborative code editor with WebRTC audio channels, live terminal, and AI pair programming capabilities built in 48 hours.',
+      id: '04', title: 'MRF — Maharaja Research Foundation', subtitle: 'Research Management Platform', categories: ['FULL STACK', 'RESEARCH'],
+      description: 'Digital research administration platform supporting the academic research lifecycle — from candidate registration and supervisor allocation to RAC reviews, progress reports, publications, examinations, and graduation.',
       highlight: false
     }
   ];
 
-  const filteredProjects = activeFilter === 'ALL' ? projects : projects.filter(p => p.category === activeFilter);
+  const filteredProjects = activeFilter === 'ALL' ? projects : projects.filter(p => p.categories && p.categories.includes(activeFilter));
 
   return (
     <section id="work" className="py-24 px-6 border-t border-border-subtle bg-dark-bg">
