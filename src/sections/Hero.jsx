@@ -71,7 +71,7 @@ export function Hero() {
               className="text-accent-orange text-lg leading-none"
               initial={{ scale: 0 }} animate={{ scale: [0, 1.2, 1] }} transition={{ delay: 1.1, duration: 0.5 }}
             >●</motion.span>
-            <span>COO</span><span>•</span><span>SOFTWARE DEVELOPER</span><span>•</span><span>PRODUCT BUILDER</span>
+            <span>CISO</span><span>•</span><span>SOFTWARE DEVELOPER</span><span>•</span><span>PRODUCT BUILDER</span>
           </motion.div>
           
           <motion.p custom={8} variants={stagger} initial="hidden" animate="show" className="text-lg md:text-xl text-text-gray max-w-xl mb-10 leading-relaxed">

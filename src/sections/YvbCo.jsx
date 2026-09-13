@@ -42,7 +42,7 @@ export function YvbCo() {
                 YVB&Co is an independent technology studio based in India, operating globally. 
                 We're a team of six engineers and designers building websites, apps, ERP systems, 
                 and tools around the way businesses actually work — not the other way around. 
-                I serve as COO, leading the company operations.
+                I serve as CISO (Chief Information Security Officer), leading the company security and operations.
               </p>
               
               <a 

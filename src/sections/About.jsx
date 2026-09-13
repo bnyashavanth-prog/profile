@@ -117,7 +117,7 @@ export function About() {
             className="mt-6 z-20 border-l-2 border-accent-orange pl-4 py-1.5 font-mono bg-dark-card/60 backdrop-blur-sm rounded-r-lg max-w-[420px] w-full"
           >
             <div className="text-accent-orange font-bold text-sm tracking-wider uppercase">Yashavanth BN</div>
-            <div className="text-white text-xs tracking-wide mt-0.5 font-mono">COO · SOFTWARE DEVELOPER</div>
+            <div className="text-white text-xs tracking-wide mt-0.5 font-mono">CISO (CHIEF INFORMATION SECURITY OFFICER) · SOFTWARE DEVELOPER</div>
             <div className="text-text-gray text-xs mt-1">Mysore, Karnataka, India</div>
             <div className="text-accent-orange/80 text-[11px] mt-1.5 font-mono italic">// Building with purpose</div>
           </motion.div>
