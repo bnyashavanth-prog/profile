@@ -19,30 +19,37 @@ export function Contact() {
     setIsSending(true);
 
     try {
-      await fetch("https://formsubmit.co/ajax/bnyashavanth@gmail.com", {
+      const response = await fetch("https://api.web3forms.com/submit", {
         method: "POST",
         headers: { 
           "Content-Type": "application/json",
           "Accept": "application/json"
         },
         body: JSON.stringify({
+          access_key: "648691b2-b9b0-4730-ac43-041e3c309622",
           name: formData.name,
           email: formData.email,
           message: formData.message,
-          _subject: `New Portfolio Inquiry from ${formData.name}`,
-          _captcha: "false"
+          subject: `New Portfolio Inquiry from ${formData.name}`
         })
       });
-      setIsSubmitted(true);
+
+      const result = await response.json();
+      
+      if (result.success) {
+        setIsSubmitted(true);
+      } else {
+        throw new Error(result.message || "Failed to submit form");
+      }
     } catch (err) {
-      console.error("Failed to send message via AJAX:", err);
+      console.error("Failed to send message via Web3Forms:", err);
       // Fallback to mailto link
       const subject = encodeURIComponent(`Portfolio Inquiry from ${formData.name}`);
       const body = encodeURIComponent(
         `Name: ${formData.name}\nEmail: ${formData.email}\n\nMessage:\n${formData.message}`
       );
       window.location.href = `mailto:bnyashavanth@gmail.com?subject=${subject}&body=${body}`;
-      setIsSubmitted(true);
+      setIsSubmitted(true); // Still show success UI because we fallback to their local mail client
     } finally {
       setIsSending(false);
     }
