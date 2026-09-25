@@ -1,24 +1,30 @@
-import React from 'react';
+import React, { lazy, Suspense } from 'react';
 import { Navbar } from './components/Navbar';
+import { Cursor } from './components/Cursor';
 import { Hero } from './sections/Hero';
-import { About } from './sections/About';
-import { YvbCo } from './sections/YvbCo';
-import { Work } from './sections/Work';
-import { Skills } from './sections/Skills';
-import { Contact } from './sections/Contact';
+import { Stats } from './sections/Stats';
+
+// Lazy-load below-the-fold sections
+const Work = lazy(() => import('./sections/Work').then(m => ({ default: m.Work })));
+const Skills = lazy(() => import('./sections/Skills').then(m => ({ default: m.Skills })));
+const Timeline = lazy(() => import('./sections/Timeline').then(m => ({ default: m.Timeline })));
+const Contact = lazy(() => import('./sections/Contact').then(m => ({ default: m.Contact })));
 
 function App() {
   return (
-    <div className="min-h-screen bg-dark-bg text-white selection:bg-accent-orange selection:text-dark-bg overflow-x-hidden">
+    <div className="min-h-screen bg-dark-bg text-white selection:bg-accent-orange selection:text-dark-bg overflow-x-hidden bg-grain">
+      <Cursor />
       <Navbar />
       
       <main>
         <Hero />
-        <About />
-        <YvbCo />
-        <Work />
-        <Skills />
-        <Contact />
+        <Stats />
+        <Suspense fallback={<div className="min-h-screen bg-dark-bg" />}>
+          <Work />
+          <Skills />
+          <Timeline />
+          <Contact />
+        </Suspense>
       </main>
     </div>
   );

@@ -29,11 +29,9 @@ export function Navbar() {
   };
 
   const navItems = [
-    { name: 'About', href: '#about' },
-    { name: 'YVB&Co', href: '#yvbco' },
     { name: 'Work', href: '#work' },
     { name: 'Skills', href: '#skills' },
-    { name: 'Creative', href: '#creative' },
+    { name: 'Journey', href: '#timeline' },
     { name: 'Contact', href: '#contact' },
   ];
 
@@ -81,7 +79,7 @@ export function Navbar() {
             </div>
             
             <motion.nav variants={navContainer} className="flex items-center justify-center space-x-2 sm:space-x-4 overflow-x-auto max-w-full py-1">
-              {['home', 'about', 'work', 'skills', 'contact'].map((item, idx) => (
+              {['home', 'work', 'skills', 'timeline', 'contact'].map((item, idx) => (
                 <React.Fragment key={item}>
                   <a 
                     href={`#${item}`} 
@@ -136,14 +134,13 @@ export function Navbar() {
             </a>
             
             {/* Desktop Nav Items */}
-            <nav className="hidden md:flex items-center text-text-gray">
+            <nav className="hidden md:flex items-center space-x-6 text-text-gray font-mono uppercase tracking-widest text-xs">
               {navItems.map((item, idx) => (
                 <React.Fragment key={item.name}>
-                  <a href={item.href} onClick={(e) => scrollTo(e, item.href)} className="hover:text-white transition-colors relative group px-2">
+                  <a href={item.href} onClick={(e) => scrollTo(e, item.href)} className="hover:text-white transition-colors relative group py-2">
                     {item.name}
-                    <span className="absolute -bottom-1 left-0 w-0 h-[2px] bg-accent-orange transition-all duration-300 group-hover:w-full"></span>
+                    <span className="absolute bottom-0 left-1/2 -translate-x-1/2 w-0 h-[2px] bg-[#f5b942] transition-all duration-300 group-hover:w-full group-hover:shadow-[0_0_10px_rgba(245,185,66,0.8)]"></span>
                   </a>
-                  {idx < navItems.length - 1 && <span className="mx-2 opacity-50">·</span>}
                 </React.Fragment>
               ))}
             </nav>

@@ -1,138 +1,133 @@
-import React, { useEffect, useState } from 'react';
-import { motion, useScroll, useTransform } from 'framer-motion';
+import React, { useState, useEffect } from 'react';
+import { motion, AnimatePresence } from 'framer-motion';
+import { SpotlightImage } from '../components/SpotlightImage';
 import { Button } from '../components/Button';
-import { Constellation } from '../components/Constellation';
 
-const CountUp = ({ to, duration = 2, delay = 0 }) => {
-  const [count, setCount] = useState(0);
+const taglines = [
+  "I BUILD DIGITAL EXPERIENCES",
+  "I DON'T JUST WRITE CODE",
+  "I BUILD WHAT'S NEXT"
+];
 
-  useEffect(() => {
-    let startTimestamp = null;
-    let animationFrame = null;
-
-    const step = (timestamp) => {
-      if (!startTimestamp) startTimestamp = timestamp;
-      const progress = Math.min((timestamp - startTimestamp) / (duration * 1000), 1);
-      setCount(Math.floor(progress * to));
-      if (progress < 1) {
-        animationFrame = requestAnimationFrame(step);
-      }
-    };
-
-    const timer = setTimeout(() => {
-      animationFrame = requestAnimationFrame(step);
-    }, delay * 1000);
-
-    return () => {
-      clearTimeout(timer);
-      if (animationFrame) cancelAnimationFrame(animationFrame);
-    };
-  }, [to, duration, delay]);
-
-  return <span>{count}</span>;
-};
+const particles = Array.from({ length: 15 }, (_, i) => ({
+  id: i,
+  initX: Math.random() * 1200,
+  initY: Math.random() * 800,
+  initOpacity: Math.random() * 0.5 + 0.1,
+  animY: Math.random() * -200 - 100,
+  animX: (Math.random() - 0.5) * 100,
+  animOpacity: Math.random() * 0.8,
+  duration: Math.random() * 10 + 10,
+}));
 
 export function Hero() {
-  const { scrollY } = useScroll();
-  const yParallax = useTransform(scrollY, [0, 1000], [0, 200]);
-  
-  const stagger = {
-    hidden: { opacity: 0, y: 30 },
-    show: (custom) => ({
-      opacity: 1, y: 0,
-      transition: { duration: 0.7, delay: custom * 0.15, ease: "easeOut" }
-    })
-  };
+  const [taglineIndex, setTaglineIndex] = useState(0);
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setTaglineIndex((prev) => (prev + 1) % taglines.length);
+    }, 3000);
+    return () => clearInterval(interval);
+  }, []);
 
   return (
-    <section id="home" className="relative min-h-screen flex items-center pt-24 sm:pt-28 pb-12 overflow-hidden bg-dark-bg">
-      {/* Constellation background layer */}
-      <div className="absolute inset-0 z-0">
-        <Constellation labels={['PRODUCT', 'STRATEGY', 'SYSTEMS', 'TECHNOLOGY']} />
+    <section id="hero" className="relative min-h-screen flex flex-col justify-center pt-24 pb-12 overflow-hidden bg-dark-bg selection:bg-accent-orange">
+      
+      {/* Spotlight Beam Cone */}
+      <motion.div 
+        initial={{ opacity: 0, scaleY: 0 }}
+        animate={{ opacity: 1, scaleY: 1 }}
+        transition={{ duration: 1, ease: [0.16, 1, 0.3, 1] }}
+        className="absolute top-0 right-0 md:right-[10%] w-[150%] md:w-[600px] h-full spotlight-cone origin-top pointer-events-none z-0"
+      />
+
+      {/* Floating Dust Particles */}
+      <div className="absolute inset-0 pointer-events-none overflow-hidden z-10">
+        {particles.map((p) => (
+          <motion.div
+            key={p.id}
+            className="absolute w-1 h-1 bg-white rounded-full opacity-30 blur-[1px]"
+            initial={{ x: p.initX, y: p.initY, opacity: p.initOpacity }}
+            animate={{ y: [null, p.animY], x: [null, p.animX], opacity: [null, p.animOpacity, 0] }}
+            transition={{ duration: p.duration, repeat: Infinity, ease: "linear" }}
+          />
+        ))}
       </div>
 
-      <motion.div style={{ y: yParallax }} className="max-w-7xl mx-auto w-full px-4 sm:px-6 grid grid-cols-1 lg:grid-cols-12 gap-8 items-center relative z-10 min-h-[550px]">
+      <div className="max-w-7xl mx-auto w-full px-6 grid grid-cols-1 lg:grid-cols-2 gap-12 relative z-20 h-full flex-grow items-start pt-10">
         
-        {/* Left Content */}
-        <div className="lg:col-span-6 xl:col-span-6 z-20 py-4 sm:py-8">
-          <motion.div custom={4} variants={stagger} initial="hidden" animate="show" className="font-mono text-xs sm:text-sm text-text-gray mb-4 sm:mb-6">
-            // BUILDING DIGITAL SOLUTIONS
-          </motion.div>
-          
-          <h1 className="text-5xl sm:text-7xl md:text-[80px] font-bold leading-none tracking-tight mb-4 sm:mb-6">
-            <motion.span custom={5} variants={stagger} initial="hidden" animate="show" className="block text-white">Yashavanth</motion.span>
-            <motion.span custom={6} variants={stagger} initial="hidden" animate="show" className="block text-accent-orange">
-              <motion.span animate={{ color: ["#fff", "#F5A623"] }} transition={{ duration: 0.5, delay: 0.9 }}>BN</motion.span>
-            </motion.span>
-          </h1>
-          
-          <motion.div custom={7} variants={stagger} initial="hidden" animate="show" className="flex items-center text-xs sm:text-sm font-mono tracking-widest text-text-gray mb-6 sm:mb-8 space-x-2 sm:space-x-3 flex-wrap gap-y-2">
-            <motion.span 
-              className="text-accent-orange text-base sm:text-lg leading-none"
-              initial={{ scale: 0 }} animate={{ scale: [0, 1.2, 1] }} transition={{ delay: 1.1, duration: 0.5 }}
-            >●</motion.span>
-            <span>CISO</span><span>•</span><span>SOFTWARE DEVELOPER</span><span>•</span><span>PRODUCT BUILDER</span>
-          </motion.div>
-          
-          <motion.p custom={8} variants={stagger} initial="hidden" animate="show" className="text-base sm:text-lg md:text-xl text-text-gray max-w-xl mb-8 sm:mb-10 leading-relaxed">
-            I build scalable web applications, solve real-world problems and turn 
-            ideas into products that make an impact.
-          </motion.p>
-          
-          <div className="flex flex-col sm:flex-row gap-4 mb-12 sm:mb-16">
-            <motion.div custom={9} variants={stagger} initial="hidden" animate="show"><Button href="#work" icon>View My Work</Button></motion.div>
-            <motion.div custom={10} variants={stagger} initial="hidden" animate="show"><Button href="#contact" variant="secondary">Get In Touch</Button></motion.div>
-          </div>
-          
-          <div className="flex flex-col sm:flex-row items-start sm:items-center gap-4 sm:gap-0 font-mono text-xs sm:text-sm">
-            <motion.div custom={11} variants={stagger} initial="hidden" animate="show" whileHover={{ scale: 1.05 }} className="pr-6 sm:border-r border-border-subtle cursor-default">
-              <span className="block text-white font-bold text-base sm:text-lg"><CountUp to={5} delay={1.7} />+</span>
-              <span className="text-text-gray">Projects Built</span>
-            </motion.div>
-            <motion.div custom={12} variants={stagger} initial="hidden" animate="show" whileHover={{ scale: 1.05 }} className="sm:px-6 sm:border-r border-border-subtle cursor-default">
-              <span className="block text-white font-bold text-base sm:text-lg"><CountUp to={3} delay={1.8} />+ Years</span>
-              <span className="text-text-gray">Experience</span>
-            </motion.div>
-            <motion.div custom={13} variants={stagger} initial="hidden" animate="show" whileHover={{ scale: 1.05 }} className="sm:pl-6 cursor-default">
-              <span className="block text-white font-bold text-base sm:text-lg">∞</span>
-              <span className="text-text-gray">Learning Always</span>
-            </motion.div>
-          </div>
-        </div>
-
-        {/* Right Content - Full Bleed Portrait Image */}
-        <div className="lg:col-span-6 xl:col-span-6 relative h-full min-h-[350px] sm:min-h-[450px] lg:min-h-[650px] flex items-end justify-center lg:justify-end pointer-events-none mt-4 lg:mt-0">
-          <motion.div 
-            initial={{ opacity: 0, scale: 0.95 }}
-            animate={{ opacity: 1, scale: 1 }}
-            transition={{ duration: 0.9, delay: 0.5, ease: "easeOut" }}
-            className="relative w-full h-full max-w-[400px] sm:max-w-[500px] lg:max-w-none flex items-end justify-center lg:justify-end overflow-hidden"
+        {/* Left Content - Top Left Alignment */}
+        <div className="order-2 lg:order-1 flex flex-col items-start justify-start text-left mt-8 lg:mt-16">
+          <motion.div
+            initial={{ opacity: 0, y: 30 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.8, delay: 0.8, ease: [0.16, 1, 0.3, 1] }}
           >
-            <img 
-              src="/portrait.jpg" 
-              alt="Yashavanth BN" 
-              className="w-full h-auto max-h-[450px] sm:max-h-[550px] lg:max-h-[650px] object-cover object-top filter brightness-95 contrast-105 pointer-events-auto portrait-blend"
-            />
-            {/* Soft edge gradient fades - Left and Bottom */}
-            <div className="absolute inset-0 bg-gradient-to-r from-dark-bg via-transparent to-transparent w-1/2 z-10 pointer-events-none"></div>
-            <div className="absolute inset-0 bg-gradient-to-t from-dark-bg via-transparent to-transparent h-1/3 top-auto bottom-0 z-10 pointer-events-none"></div>
+            <h2 className="font-mono text-accent-blue text-xs md:text-sm tracking-[0.2em] uppercase mb-6 flex items-center gap-3">
+              <span className="w-8 h-[1px] bg-accent-blue"></span>
+              Yashavanth BN
+            </h2>
+          </motion.div>
+          
+          <div className="h-40 sm:h-48 md:h-56 w-full flex items-start justify-start">
+            <AnimatePresence mode="wait">
+              <motion.h1
+                key={taglineIndex}
+                initial={{ opacity: 0, y: 20, filter: 'blur(10px)' }}
+                animate={{ opacity: 1, y: 0, filter: 'blur(0px)' }}
+                exit={{ opacity: 0, y: -20, filter: 'blur(10px)' }}
+                transition={{ duration: 0.5, ease: [0.16, 1, 0.3, 1] }}
+                className="font-display text-5xl sm:text-6xl md:text-7xl lg:text-[5rem] font-black leading-[1.05] text-[#f5b942] uppercase text-left max-w-2xl drop-shadow-[0_0_15px_rgba(245,185,66,0.3)]"
+              >
+                {/* Ensure it splits onto 2 lines naturally */}
+                {taglines[taglineIndex]}
+              </motion.h1>
+            </AnimatePresence>
+          </div>
+
+          <motion.div
+            initial={{ opacity: 0, y: 30 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.8, delay: 1, ease: [0.16, 1, 0.3, 1] }}
+            className="mt-4 text-text-gray max-w-md space-y-4"
+          >
+            <p className="text-lg leading-relaxed">
+              CISO & Software Developer specializing in resilient architecture, full-stack systems, and rigorous quality assurance.
+            </p>
+          </motion.div>
+
+          <motion.div
+            initial={{ opacity: 0, y: 30 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.8, delay: 1.2, ease: [0.16, 1, 0.3, 1] }}
+            className="flex flex-col sm:flex-row gap-5 mt-12 w-full sm:w-auto"
+          >
+            <Button href="#work" variant="primary">Explore My Work</Button>
+            <Button href="#contact" variant="secondary">Download Resume</Button>
           </motion.div>
         </div>
-      </motion.div>
 
-      {/* Rotated Vertical Text on far right */}
-      <div className="absolute right-4 top-1/2 -translate-y-1/2 hidden xl:block z-20 h-64 overflow-hidden pointer-events-none">
-        <motion.div 
-          className="font-mono text-xs tracking-[0.3em] text-text-gray/40 flex flex-col items-center gap-8"
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1, y: ["0%", "-50%"] }}
-          transition={{ opacity: { delay: 1.5, duration: 1 }, y: { repeat: Infinity, duration: 20, ease: "linear" } }}
-          style={{ writingMode: 'vertical-rl' }}
-        >
-          <span>/ YASHAVANTH BN — PORTFOLIO /</span>
-          <span>/ YASHAVANTH BN — PORTFOLIO /</span>
-        </motion.div>
+        {/* Right Content - Spotlight Image */}
+        <div className="order-1 lg:order-2 relative w-full h-[40vh] lg:h-[75vh] flex items-end lg:items-center justify-center lg:justify-end">
+          <SpotlightImage src="/hero-portrait.jpg" alt="Yashavanth BN" className="translate-y-10 lg:translate-y-0 lg:scale-110" />
+        </div>
+
       </div>
+
+      {/* Subtle Scroll Indicator */}
+      <motion.div 
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        transition={{ delay: 2, duration: 1 }}
+        className="absolute bottom-8 left-6 md:left-12 flex flex-col items-center justify-center opacity-50 z-20"
+      >
+        <motion.div 
+          animate={{ y: [0, 15, 0] }} 
+          transition={{ duration: 2, repeat: Infinity, ease: "easeInOut" }}
+          className="w-[1px] h-16 bg-gradient-to-b from-[#f5b942] to-transparent mb-4"
+        />
+        <span className="font-mono text-[10px] text-white tracking-[0.3em] uppercase rotate-180" style={{ writingMode: 'vertical-rl' }}>Scroll</span>
+      </motion.div>
     </section>
   );
 }

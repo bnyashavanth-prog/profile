@@ -1,212 +1,100 @@
-import React, { useState } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
-import { CheckCircle2, Send } from 'lucide-react';
+import React from 'react';
+import { motion } from 'framer-motion';
+import { Mail, FileText } from 'lucide-react';
+import { SpotlightImage } from '../components/SpotlightImage';
+
+function LinkedinIcon({ size = 24 }) {
+  return (
+    <svg width={size} height={size} viewBox="0 0 24 24" fill="currentColor">
+      <path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 01-2.063-2.065 2.064 2.064 0 112.063 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/>
+    </svg>
+  );
+}
+
+function GithubIcon({ size = 24 }) {
+  return (
+    <svg width={size} height={size} viewBox="0 0 24 24" fill="currentColor">
+      <path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0024 12c0-6.63-5.37-12-12-12z"/>
+    </svg>
+  );
+}
+
+function Sparkle() {
+  return (
+    <svg width="40" height="40" viewBox="0 0 24 24" fill="none" className="absolute -top-8 -right-8 text-[#f5b942] opacity-80">
+      <path d="M12 0L13.5 8.5L22 10L13.5 11.5L12 20L10.5 11.5L2 10L10.5 8.5L12 0Z" fill="currentColor" />
+    </svg>
+  );
+}
 
 export function Contact() {
-  const [formData, setFormData] = useState({ name: '', email: '', message: '' });
-  const [isSubmitted, setIsSubmitted] = useState(false);
-  const [isSending, setIsSending] = useState(false);
-
-  const handleChange = (e) => {
-    const { id, value } = e.target;
-    setFormData((prev) => ({ ...prev, [id]: value }));
-  };
-
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    if (!formData.name || !formData.email || !formData.message) return;
-
-    setIsSending(true);
-
-    try {
-      const response = await fetch("https://api.web3forms.com/submit", {
-        method: "POST",
-        headers: { 
-          "Content-Type": "application/json",
-          "Accept": "application/json"
-        },
-        body: JSON.stringify({
-          access_key: "648691b2-b9b0-4730-ac43-041e3c309622",
-          name: formData.name,
-          email: formData.email,
-          message: formData.message,
-          subject: `New Portfolio Inquiry from ${formData.name}`
-        })
-      });
-
-      const result = await response.json();
-      
-      if (result.success) {
-        setIsSubmitted(true);
-      } else {
-        throw new Error(result.message || "Failed to submit form");
-      }
-    } catch (err) {
-      console.error("Failed to send message via Web3Forms:", err);
-      // Fallback to mailto link
-      const subject = encodeURIComponent(`Portfolio Inquiry from ${formData.name}`);
-      const body = encodeURIComponent(
-        `Name: ${formData.name}\nEmail: ${formData.email}\n\nMessage:\n${formData.message}`
-      );
-      window.location.href = `mailto:bnyashavanth@gmail.com?subject=${subject}&body=${body}`;
-      setIsSubmitted(true); // Still show success UI because we fallback to their local mail client
-    } finally {
-      setIsSending(false);
-    }
-  };
-
-  const handleReset = () => {
-    setFormData({ name: '', email: '', message: '' });
-    setIsSubmitted(false);
-  };
+  const links = [
+    { name: 'Email', icon: <Mail size={24} />, href: 'mailto:bnyashavanth-prog@users.noreply.github.com' },
+    { name: 'LinkedIn', icon: <LinkedinIcon size={24} />, href: '#' },
+    { name: 'GitHub', icon: <GithubIcon size={24} />, href: 'https://github.com/bnyashavanth-prog' },
+    { name: 'Resume', icon: <FileText size={24} />, href: '#' }
+  ];
 
   return (
-    <section id="contact" className="py-24 px-6 border-t border-border-subtle bg-dark-bg relative overflow-hidden">
-      <div className="max-w-4xl mx-auto text-center relative z-10">
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.5 }}
-        >
-          <h2 className="text-5xl md:text-7xl font-bold mb-6 tracking-tight text-white">
-            LET'S BUILD <br className="sm:hidden" />
-            <span className="text-accent-orange">SOMETHING USEFUL.</span>
-          </h2>
-          <p className="text-xl text-text-gray mb-16">
-            Have an idea, product or technology problem? Let's talk.
-          </p>
-        </motion.div>
+    <section id="contact" className="relative py-32 px-6 bg-dark-bg overflow-hidden flex flex-col items-center justify-center min-h-[80vh]">
+      
+      {/* Return of the Spotlight */}
+      <motion.div 
+        initial={{ opacity: 0, scaleY: 0 }}
+        whileInView={{ opacity: 1, scaleY: 1 }}
+        viewport={{ once: true }}
+        transition={{ duration: 1.5, ease: [0.16, 1, 0.3, 1] }}
+        className="absolute bottom-0 left-1/2 -translate-x-1/2 w-full md:w-[800px] h-full bg-[radial-gradient(ellipse_at_center,_rgba(96,165,250,0.15)_0%,_transparent_70%)] pointer-events-none z-0 origin-bottom"
+      />
 
-        {/* Small constellation graphic pointing to form */}
-        <div className="flex justify-center mb-8 opacity-50">
-          <svg width="24" height="60" viewBox="0 0 24 60" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <line x1="12" y1="0" x2="12" y2="60" stroke="var(--color-accent-orange)" strokeWidth="1" strokeDasharray="4 4" />
-            <circle cx="12" cy="12" r="3" fill="var(--color-accent-orange)" />
-            <circle cx="12" cy="48" r="3" fill="var(--color-accent-orange)" />
-          </svg>
+      <div className="max-w-4xl mx-auto relative z-10 w-full text-center flex flex-col items-center">
+        
+        <div className="w-48 h-48 sm:w-64 sm:h-64 mb-12 relative overflow-hidden flex items-end">
+           <SpotlightImage src="/hero-portrait.jpg" alt="Silhouette Outro" silhouette={true} />
         </div>
 
         <motion.div
           initial={{ opacity: 0, y: 30 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
-          transition={{ duration: 0.6, delay: 0.2 }}
+          transition={{ duration: 0.8, delay: 0.2, ease: [0.16, 1, 0.3, 1] }}
+          className="relative"
         >
-          <div className="bg-dark-card border border-border-subtle rounded-3xl p-8 sm:p-12 max-w-2xl mx-auto text-left shadow-2xl relative overflow-hidden">
-            <div className="absolute top-0 right-0 w-64 h-64 bg-accent-orange/5 rounded-full blur-[80px] -translate-y-1/2 translate-x-1/2 pointer-events-none"></div>
-
-            <AnimatePresence mode="wait">
-              {!isSubmitted ? (
-                <motion.form 
-                  key="form"
-                  onSubmit={handleSubmit}
-                  initial={{ opacity: 1 }}
-                  exit={{ opacity: 0, y: -20 }}
-                  className="space-y-6 relative z-10"
-                >
-                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
-                    <div className="space-y-2">
-                      <label htmlFor="name" className="block text-xs font-mono text-text-gray tracking-wider">
-                        NAME
-                      </label>
-                      <input 
-                        type="text" 
-                        id="name"
-                        required
-                        value={formData.name}
-                        onChange={handleChange}
-                        placeholder="Yashavanth B N"
-                        className="w-full bg-dark-bg border border-border-subtle rounded-xl px-4 py-3 text-white placeholder-white/20 focus:outline-none focus:border-accent-orange focus:ring-1 focus:ring-accent-orange transition-all"
-                      />
-                    </div>
-                    <div className="space-y-2">
-                      <label htmlFor="email" className="block text-xs font-mono text-text-gray tracking-wider">
-                        EMAIL
-                      </label>
-                      <input 
-                        type="email" 
-                        id="email"
-                        required
-                        value={formData.email}
-                        onChange={handleChange}
-                        placeholder="bnyashavanth@gmail.com"
-                        className="w-full bg-dark-bg border border-border-subtle rounded-xl px-4 py-3 text-white placeholder-white/20 focus:outline-none focus:border-accent-orange focus:ring-1 focus:ring-accent-orange transition-all"
-                      />
-                    </div>
-                  </div>
-                  
-                  <div className="space-y-2">
-                    <label htmlFor="message" className="block text-xs font-mono text-text-gray tracking-wider">
-                      MESSAGE
-                    </label>
-                    <textarea 
-                      id="message"
-                      required
-                      rows="4"
-                      value={formData.message}
-                      onChange={handleChange}
-                      placeholder="How can I help you?"
-                      className="w-full bg-dark-bg border border-border-subtle rounded-xl px-4 py-3 text-white placeholder-white/20 focus:outline-none focus:border-accent-orange focus:ring-1 focus:ring-accent-orange transition-all resize-none"
-                    ></textarea>
-                  </div>
-                  
-                  <div className="pt-4">
-                    <button 
-                      type="submit" 
-                      disabled={isSending}
-                      className="w-full inline-flex items-center justify-center gap-2 rounded-full bg-accent-orange text-dark-bg px-8 py-4 font-bold hover:bg-accent-hover hover:scale-[1.02] active:scale-[0.98] transition-all duration-300 cursor-pointer disabled:opacity-70 disabled:cursor-not-allowed"
-                    >
-                      {isSending ? (
-                        <>
-                          <div className="w-4 h-4 border-2 border-dark-bg border-t-transparent rounded-full animate-spin"></div>
-                          Sending...
-                        </>
-                      ) : (
-                        <>
-                          <Send size={18} />
-                          Send Message
-                        </>
-                      )}
-                    </button>
-                  </div>
-                </motion.form>
-              ) : (
-                <motion.div
-                  key="success"
-                  initial={{ opacity: 0, scale: 0.95 }}
-                  animate={{ opacity: 1, scale: 1 }}
-                  exit={{ opacity: 0 }}
-                  className="py-12 text-center space-y-6 relative z-10"
-                >
-                  <div className="inline-flex items-center justify-center w-16 h-16 rounded-full bg-accent-orange/10 text-accent-orange mb-2">
-                    <CheckCircle2 size={36} />
-                  </div>
-                  <h3 className="text-2xl font-bold text-white font-mono">Message Sent Successfully!</h3>
-                  <p className="text-text-gray max-w-md mx-auto text-sm leading-relaxed">
-                    Thank you for reaching out! Your message has been routed directly to <span className="text-accent-orange font-mono">bnyashavanth@gmail.com</span>.
-                  </p>
-                  <button
-                    onClick={handleReset}
-                    className="inline-flex items-center justify-center px-6 py-2.5 rounded-full border border-border-subtle text-xs font-mono text-text-gray hover:text-white hover:border-accent-orange transition-colors"
-                  >
-                    Send Another Message
-                  </button>
-                </motion.div>
-              )}
-            </AnimatePresence>
-          </div>
+          <Sparkle />
+          <h2 className="text-5xl md:text-7xl lg:text-[5rem] font-display font-black text-white uppercase tracking-tight leading-none mb-6 drop-shadow-[0_0_20px_rgba(255,255,255,0.1)]">
+            Let's build <br className="md:hidden" />
+            <span className="text-gradient-gold">what's next.</span>
+          </h2>
+          <p className="text-text-gray text-lg md:text-xl max-w-lg mx-auto mb-16">
+            Open for opportunities, collaborations, and discussions on architecture, testing, and system design.
+          </p>
         </motion.div>
+
+        <motion.div 
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.8, delay: 0.4, ease: [0.16, 1, 0.3, 1] }}
+          className="flex flex-wrap justify-center gap-6"
+        >
+          {links.map((link) => (
+            <a 
+              key={link.name} 
+              href={link.href}
+              className="group flex items-center justify-center w-16 h-16 rounded-full border-2 border-[#f5b942]/30 text-white bg-[#0d1117] hover:border-[#f5b942] hover:text-[#0a0a0f] hover:bg-[#f5b942] hover:shadow-[0_0_30px_rgba(245,185,66,0.6)] hover:scale-110 transition-all duration-300"
+              aria-label={link.name}
+            >
+              <div className="group-hover:scale-110 transition-transform duration-300">
+                {link.icon}
+              </div>
+            </a>
+          ))}
+        </motion.div>
+
       </div>
-      
-      {/* Footer minimal */}
-      <div className="mt-32 max-w-7xl mx-auto flex flex-col md:flex-row justify-between items-center border-t border-border-subtle pt-8 text-xs font-mono text-text-gray">
-        <div>&copy; {new Date().getFullYear()} Yashavanth BN. All rights reserved.</div>
-        <div className="mt-4 md:mt-0 flex space-x-6">
-          <a href="https://github.com/bnyashavanth-prog" target="_blank" rel="noopener noreferrer" className="hover:text-accent-orange transition-colors">GITHUB</a>
-          <a href="https://linkedin.com" target="_blank" rel="noopener noreferrer" className="hover:text-accent-orange transition-colors">LINKEDIN</a>
-          <a href="https://twitter.com" target="_blank" rel="noopener noreferrer" className="hover:text-accent-orange transition-colors">TWITTER</a>
-        </div>
+
+      <div className="absolute bottom-6 text-center w-full text-text-gray font-mono text-xs opacity-50 pointer-events-none tracking-widest uppercase">
+        © {new Date().getFullYear()} YASHAVANTH BN. BUILT WITH REACT + VITE.
       </div>
     </section>
   );
